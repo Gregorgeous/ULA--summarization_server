@@ -1,0 +1,5 @@
+venv-server/
+.vscode/
+firebase_admin_key/
+venv-script-command.txt
+codealike.json
