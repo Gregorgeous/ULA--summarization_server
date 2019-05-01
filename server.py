@@ -34,13 +34,13 @@ def summarization():
 
 def sendSummaryToFirebase(uid,summaryObject):
     # usersSummaries
-    dbRef = db.reference(f'usersSummaries')
-    thisUser = dbRef.child(f'{uid}')
+    dbRef = db.reference('usersSummaries')
+    thisUser = dbRef.child('{}'.format(uid))
     if thisUser is None:
-        newSummary = db.reference(f'usersSummaries/{uid}').push(summaryObject)
+        newSummary = db.reference('usersSummaries/{}'.format(uid)).push(summaryObject)
     else:
         newSummary = thisUser.push(summaryObject)
-    pathToNewSummary = f'usersSummaries/{uid}/{newSummary.key}'
+    pathToNewSummary = 'usersSummaries/{}/{}'.format(uid,newSummary.key)
     return pathToNewSummary
 
 def performSummarization(text):
