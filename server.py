@@ -45,8 +45,8 @@ def sendSummaryToFirebase(uid,summaryObject):
 
 def performSummarization(text):
     summarization = summarize(text, ratio=0.2)
-    print("this is the summarization")
-    print(summarization)
+    # print("this is the summarization")
+    # print(summarization)
     text_keywords = keywords(text, ratio=0.2)
     return summarization,text_keywords
 
