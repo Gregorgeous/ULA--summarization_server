@@ -21,6 +21,10 @@ default_app = firebase_admin.initialize_app(cred, {
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
 # =========== ROUTES ==========
+@app.route("/", methods=['GET'])
+def testroute():
+    return "Testing route"
+
 @app.route("/summarization", methods=['POST'])
 def summarization():
     req_json = request.get_json()
