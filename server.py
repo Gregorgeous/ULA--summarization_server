@@ -21,6 +21,10 @@ default_app = firebase_admin.initialize_app(cred, {
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
 # =========== ROUTES ==========
+@app.route("/", methods=['GET'])
+def testroute():
+    return "<h1> This message verifies the summarization server is running publicly in the doc.gold.ac.uk domain</h1>"
+
 @app.route("/summarization", methods=['POST'])
 def summarization():
     req_json = request.get_json()
@@ -30,8 +34,6 @@ def summarization():
     summaryObject = {'summary':summarized_text, 'keywords':text_keywords}
     resulting_path_to_summary = sendSummaryToFirebase(user_id,summaryObject)
     response = jsonify(resulting_path_to_summary)
-    print("This is my composed response: ")
-    print(response)
     response.status_code = 200
     return response
 # =========== HELPER FUNCTIONS ========
@@ -54,4 +56,4 @@ def performSummarization(text):
     return summarization,text_keywords
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0',port=443,debug=True)

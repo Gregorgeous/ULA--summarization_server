@@ -1,5 +1,7 @@
 venv-server/
+venv/
 .vscode/
 firebase_admin_key/
 venv-script-command.txt
+__pycache__/
 codealike.json
