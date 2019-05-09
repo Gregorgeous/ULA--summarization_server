@@ -1,4 +1,4 @@
-from flask import Flask,request
+from flask import Flask,request, jsonify
 app = Flask(__name__)
 
 import gensim
@@ -21,10 +21,6 @@ default_app = firebase_admin.initialize_app(cred, {
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
 # =========== ROUTES ==========
-@app.route("/", methods=['GET'])
-def testroute():
-    return "Testing route"
-
 @app.route("/summarization", methods=['POST'])
 def summarization():
     req_json = request.get_json()
@@ -32,8 +28,12 @@ def summarization():
     whole_text =  req_json.get('wholeText')
     summarized_text, text_keywords = performSummarization(whole_text) 
     summaryObject = {'summary':summarized_text, 'keywords':text_keywords}
-    return sendSummaryToFirebase(user_id,summaryObject)
-
+    resulting_path_to_summary = sendSummaryToFirebase(user_id,summaryObject)
+    response = jsonify(resulting_path_to_summary)
+    print("This is my composed response: ")
+    print(response)
+    response.status_code = 200
+    return response
 # =========== HELPER FUNCTIONS ========
 
 def sendSummaryToFirebase(uid,summaryObject):
@@ -45,12 +45,11 @@ def sendSummaryToFirebase(uid,summaryObject):
     else:
         newSummary = thisUser.push(summaryObject)
     pathToNewSummary = 'usersSummaries/{}/{}'.format(uid,newSummary.key)
+    
     return pathToNewSummary
 
 def performSummarization(text):
     summarization = summarize(text, ratio=0.2)
-    # print("this is the summarization")
-    # print(summarization)
     text_keywords = keywords(text, ratio=0.2)
     return summarization,text_keywords
 
