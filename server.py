@@ -23,7 +23,7 @@ cors = CORS(app, resources={r"/*": {"origins": "*"}})
 # =========== ROUTES ==========
 @app.route("/", methods=['GET'])
 def testroute():
-    return "Testing route"
+    return "<h1> This is coming live from the server <h1>"
 
 @app.route("/summarization", methods=['POST'])
 def summarization():
@@ -55,4 +55,4 @@ def performSummarization(text):
     return summarization,text_keywords
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0',port=443,debug=True)
